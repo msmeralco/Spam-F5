@@ -2,26 +2,25 @@
 import { response, Router } from "express";
 import multer from "multer";
 import generateBillInfo from "../services/gemini.js";
+import generateChatText from "../services/gemini.js";
 
 const router = Router();
 const upload = multer({storage: multer.memoryStorage()}); // store in memorry
 
-async function handleChatbotRequest(req, res) {
+
+
+router.post("/chat", async(req, res) => {
     try {
-        const { message, prompt } = req.body;  
-        if (!message || !prompt) {
+        const { prompt } = req.body;
+        if (!prompt) {
             return res.status(400).json({ error: "Message / prompt is required" });
         }
-        
-        //logic later (placeholder)
-
-        res.status(200).json({ reply: `This is a placeholder response from the chatbot. you typed ${prompt} and ${message}` });
-    }
-        catch (error) {
+        res.status(200).json({ response: `${generateChatText(prompt)}` });
+    } catch (error) {
         console.error("Error handling chatbot request:", error);
         res.status(500).json({ error: "Internal Server Error" });
-    }
-}
+    }   
+});
 
 router.post("/upload", upload.single("file"), async (req, res) => {
     try {
@@ -44,6 +43,5 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     }
 });
 
-router.post("/chat", handleChatbotRequest);
 
 export default router;
