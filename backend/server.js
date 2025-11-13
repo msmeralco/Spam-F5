@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import chatBotRoutes from "./src/routes/generate.js";
+
 
 
 
@@ -10,7 +10,7 @@ dotenv.config();
 
 // Import routes
 // import userRoutes from "./src/routes/user.routes.js";
-
+import chatBotRoutes from "./src/routes/chatbot.js";
 
 const app = express();
 // Enable CORS

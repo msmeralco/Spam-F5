@@ -1,22 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
+// The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const ai = new GoogleGenAI({});
 
-const sysin = `
-You are a model that analyzes electricity bills and creates a baseline for saved energy tracker applications.
 
+const sysin = `You are a model that analyzes electricity bills and creates a baseline for saved energy tracker applications.
 Return a JSON object with the following keys:
 month: string (the month of the bill)
 rate_this_month: number (the rate for this month in kWh)
 actual_consumption: number (the actual consumption in kWh)
 message: string (a brief analysis of the bill + tips to save energy)
-baseline: number (a baseline consumption value in kWh to compare against)
-
-Analyze the provided electricity bill image and extract the required information.
-if any info in missing, return null for that field.
 `;
-
-
 
 function extractJson(text) {
   try {
@@ -47,7 +41,7 @@ async function generateBillInfo(base64ImageFile, mimeType = "image/jpeg") {
     ];
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents,
     });
 
