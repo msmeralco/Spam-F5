@@ -55,14 +55,8 @@ const QuickSummary: React.FC = () => {
       {/* Sinag Tokens */}
       <div className={`${summaryBoxClasses} border-r border-white/20`}>
         <span style={labelStyle}>Sinag Tokens</span>
-        <strong style={valueStyle}>{sinagTokens || 0} SIN</strong>
+        <strong style={sinagTokenValueStyle}>{sinagTokens || 0} SIN</strong>
       </div>
-      {/* Bill Estimate */}
-      <div className={summaryBoxClasses}>
-        <span style={labelStyle}>Baseline</span>
-        <strong style={valueStyle}>{Baseline || 0} kWh</strong>
-      </div>
-      
     </div>
   );
 };

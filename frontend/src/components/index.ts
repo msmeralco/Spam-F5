@@ -9,3 +9,4 @@ export { default as Leaderboard } from './Leaderboard/Leaderboard';
 export { default as GeminiChat } from './GeminiChat/GeminiChat';
 export { default as TokenHistory } from './TokenHistory/TokenHistory';
 export { default as RewardsGrid } from './RewardsGrid/RewardsGrid';
+export { default as LandingHeader } from './LandingHeader/LandingHeader';

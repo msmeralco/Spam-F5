@@ -1,5 +1,9 @@
 import HomeDashboard from "./pages/HomeDashboard";
 import { Route, Routes, Navigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useActiveWallet } from "thirdweb/react";
+import { isAddress } from "thirdweb/utils";
 import {
   BillTracker,
   Wallet,
@@ -13,6 +17,29 @@ import { Header } from "./components";
 import LightRays from "./components/LightRays";
 
 export function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const wallet = useActiveWallet();
+  const address = wallet?.getAccount()?.address;
+  const isConnected = address && isAddress(address);
+  const hasRedirected = useRef(false);
+
+  // One-time redirect to dashboard when user logs in on landing page
+  useEffect(() => {
+    if (isConnected && location.pathname === "/" && !hasRedirected.current) {
+      hasRedirected.current = true;
+      navigate("/dashboard");
+    }
+  }, [isConnected, location.pathname, navigate]);
+
+  // Redirect to landing page when user logs out while not on landing page
+  useEffect(() => {
+    if (!isConnected && location.pathname !== "/" && hasRedirected.current) {
+      hasRedirected.current = false;
+      navigate("/");
+    }
+  }, [isConnected, location.pathname, navigate]);
+
   return (
     <>
       <Routes>
@@ -64,7 +91,7 @@ export function App() {
                     mouseInfluence={0.1}
                     noiseAmount={0.1}
                     distortion={0.05}
-                    className="custom-rays absolute inset-0 z-10" // z-10 to be on top of glass rects
+                    className="custom-rays absolute inset-0 z-10"
                   />
 
                   {/* Original Background glows (Moved inside) */}

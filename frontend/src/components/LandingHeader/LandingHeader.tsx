@@ -1,26 +1,34 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ConnectButton, darkTheme, useActiveWallet } from "thirdweb/react";
 import { client } from "../../client";
-import { FiSettings, FiMenu, FiX } from "react-icons/fi";
-import { FaWallet } from "react-icons/fa";
+import { FiMenu, FiX } from "react-icons/fi";
 import sinag from "../../sinag.svg";
 import { motion, AnimatePresence } from "framer-motion";
-import { createThirdwebClient, getContract } from "thirdweb";
-import { defineChain } from "thirdweb/chains";
+import { isAddress } from "thirdweb/utils";
 
-export default function Header() {
+export default function LandingHeader() {
   const wallet = useActiveWallet();
+  const address = wallet?.getAccount()?.address;
+  const isConnected = address && isAddress(address);
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
+  const scrollToSection = (sectionId: string) => {
+    closeMenu();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const navItems = [
-    { label: "Dashboard", to: "/dashboard" },
-    { label: "Community", to: "/community" },
-    { label: "Bill Tracker", to: "/billtracker" },
-    { label: "Rewards", to: "/marketplace" },
+    { label: "Home", action: () => scrollToSection("hero") },
+    { label: "Features", action: () => scrollToSection("features") },
+    { label: "Contact", action: () => scrollToSection("footer") },
   ];
 
 
@@ -46,29 +54,12 @@ export default function Header() {
             <ul className="relative flex flex-wrap justify-center gap-x-3 sm:gap-x-6 items-center">
               {navItems.map((nav) => (
                 <li key={nav.label} className="whitespace-nowrap">
-                  <NavLink
-                    to={nav.to}
-                    end={nav.to === "/dashboard"}
-                    className={({ isActive }) =>
-                      `relative inline-flex items-center justify-center py-2 rounded-full text-[14px] tracking-[-0.28px] font-normal transition-colors duration-300 px-4 ${
-                        isActive ? "text-white" : "text-white/80 hover:text-white"
-                      }`
-                    }
+                  <button
+                    onClick={nav.action}
+                    className="relative inline-flex items-center justify-center py-2 rounded-full text-[14px] tracking-[-0.28px] font-normal transition-colors duration-300 px-4 text-white/80 hover:text-white"
                   >
-                    {({ isActive }) => (
-                      <>
-                        {nav.label}
-                        {isActive && (
-                          <motion.div
-                            layoutId="active-pill"
-                            className="absolute inset-0 rounded-full bg-white/10 border border-white/10"
-                            style={{ borderRadius: 9999 }}
-                            transition={{ duration: 0.6, type: "spring", bounce: 0.2 }}
-                          />
-                        )}
-                      </>
-                    )}
-                  </NavLink>
+                    {nav.label}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -76,20 +67,6 @@ export default function Header() {
 
           {/* Right Panel */}
           <div className="flex items-center gap-3 sm:gap-4 text-white">
-            {/* Desktop Icons */}
-            <NavLink
-              to="/wallet"
-              className="hidden md:flex p-2 rounded-full bg-white/5 hover:bg-white/10 transition-transform duration-300 ease-in-out hover:scale-110"
-            >
-              <FaWallet size={18} />
-            </NavLink>
-            <NavLink
-              to="/settings"
-              className="hidden md:flex p-2 rounded-full bg-white/5 hover:bg-white/10 transition-transform duration-300 ease-in-out hover:scale-110"
-            >
-              <FiSettings size={18} />
-            </NavLink>
-
             {/* Connect Wallet Button */}
             <div className="inline-flex items-center justify-center rounded-[50px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_2px_12px_rgba(255,255,255,0.04)] p-0.5">
               <ConnectButton
@@ -157,46 +134,34 @@ export default function Header() {
                 <ul className="space-y-2">
                   {navItems.map((nav) => (
                     <li key={nav.label}>
-                      <NavLink
-                        to={nav.to}
-                        end={nav.to === "/dashboard"}
-                        onClick={closeMenu}
-                        className={({ isActive }) =>
-                          `block py-3 px-4 rounded-lg text-base font-medium transition-all duration-300 ${
-                            isActive
-                              ? "bg-white/10 text-white border border-white/10"
-                              : "text-white/70 hover:text-white hover:bg-white/5"
-                          }`
-                        }
+                      <button
+                        onClick={nav.action}
+                        className="block w-full text-left py-3 px-4 rounded-lg text-base font-medium transition-all duration-300 text-white/70 hover:text-white hover:bg-white/5"
                       >
                         {nav.label}
-                      </NavLink>
+                      </button>
                     </li>
                   ))}
                 </ul>
               </nav>
 
-              {/* Menu Footer - Icons */}
+              {/* Menu Footer - Connect Button */}
               <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
-                <div className="flex gap-3">
-                  <NavLink
-                    to="/wallet"
-                    onClick={closeMenu}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300 text-white"
-                  >
-                    <FaWallet size={18} />
-                    <span className="text-sm font-medium">Wallet</span>
-                  </NavLink>
-                  <NavLink
-                    to="/settings"
-                    onClick={closeMenu}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300 text-white"
-                  >
-                    <FiSettings size={18} />
-                    <span className="text-sm font-medium">Settings</span>
-                  </NavLink>
+                <div className="inline-flex w-full items-center justify-center rounded-[50px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_2px_12px_rgba(255,255,255,0.04)] p-0.5">
+                  <ConnectButton
+                    client={client}
+                    theme={darkTheme({
+                      colors: {
+                        primaryButtonText: "hsl(0, 100%, 99%)",
+                        primaryButtonBg: "hsla(0, 0%, 0%, 0.00)",
+                        secondaryButtonHoverBg: "hsl(228, 2%, 28%)",
+                      },
+                    })}
+                    connectButton={{
+                      label: "Connect Wallet",
+                    }}
+                  />
                 </div>
-              
               </div>
             </motion.div>
           </>

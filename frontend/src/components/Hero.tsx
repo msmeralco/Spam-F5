@@ -1,6 +1,11 @@
 import { Sparkles, FileText, PieChart, Crown, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LightRays from './LightRays';
+import { ConnectButton, darkTheme, useActiveWallet } from "thirdweb/react";
+import { client } from "../client"
+import { isAddress } from "thirdweb/utils";
+import sinag from "../sinag.svg";
+import Footer from "./Footer";
 
 const features = [
   {
@@ -24,6 +29,10 @@ const features = [
 ];
 
 const Hero = () => {
+  const wallet = useActiveWallet();
+  const address = wallet?.getAccount()?.address;
+  const isConnected = address && isAddress(address);
+
   return (
     <div className="relative bg-gradient-to-br from-sinag-dark via-sinag-dark">
       {/* Shared Background */}
@@ -90,7 +99,7 @@ const Hero = () => {
             }}
           >
             Save Power, Earn Tokens,<br />
-            Feel Rewarded with Sinag
+            Make An Impact with Sinag
           </h1>
 
           {/* Description */}
@@ -98,14 +107,30 @@ const Hero = () => {
             Sinag helps you track your Meralco consumption, save electricity, and earn eco-rewards.
           </p>
 
-          {/* CTA Button */}
-          <Button
-            size="lg"
-            className="h-10 sm:h-12 md:h-[45px] px-6 sm:px-8 bg-gradient-to-b from-sinag-orange-start to-sinag-orange-end hover:opacity-90 transition-opacity rounded-[50px] text-black font-medium text-sm sm:text-base shadow-lg shadow-sinag-orange-start/20"
-          >
-            <FileText className="w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6 mr-2" />
-            Upload Your Bill
-          </Button>
+          {/* CTA Button with Zap Icon and Connect Wallet */}
+          {isConnected ? (
+            <button className="h-10 sm:h-12 md:h-[45px] px-6 sm:px-8 bg-gradient-to-b from-sinag-orange-start to-sinag-orange-end hover:opacity-90 transition-opacity rounded-[50px] text-black font-medium text-sm sm:text-base shadow-lg shadow-sinag-orange-start/20 flex items-center justify-center gap-2 w-fit mx-auto">
+              <Zap className="w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6" />
+              <span>Start With Sinag</span>
+            </button>
+          ) : (
+            <div className="h-10 sm:h-12 md:h-[45px] px-6 sm:px-8 bg-gradient-to-b from-sinag-orange-start to-sinag-orange-end hover:opacity-90 transition-opacity rounded-[50px] text-black font-medium text-sm sm:text-base shadow-lg shadow-sinag-orange-start/20 flex items-center justify-center gap-2 w-fit mx-auto">
+              <Zap className="w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6" />
+              <ConnectButton
+                client={client}
+                theme={darkTheme({
+                  colors: {
+                    primaryButtonText: "#000000",
+                    primaryButtonBg: "transparent",
+                    secondaryButtonHoverBg: "rgba(0, 0, 0, 0.1)",
+                  },
+                })}
+                connectButton={{
+                  label: "Start With Sinag",
+                }}
+              />
+            </div>
+          )}           
         </div>
       </section>
 
@@ -141,36 +166,7 @@ const Hero = () => {
       </div>
     </section>
 
-
-
-      {/* Footer */}
-      <footer className="relative py-12 sm:py-16 px-4 sm:px-6 border-t border-glass-border/10 z-10">
-        <div className="container mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <Zap className="w-5 sm:w-6 h-5 sm:h-6 text-sinag-orange-start" />
-              <span className="text-lg sm:text-xl font-bold text-sinag-text">Sinag</span>
-            </div>
-            <p className="text-xs sm:text-sm text-sinag-text-muted/60 max-w-xs sm:max-w-md mb-4 sm:mb-6">
-              Empowering every Filipino to light up a sustainable tomorrow.
-            </p>
-            <Button
-              variant="outline"
-              className="text-xs sm:text-sm border-glass-border/20 bg-glass-bg/5 text-sinag-text hover:bg-glass-bg/10"
-            >
-              Shine with Sinag
-            </Button>
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 sm:pt-8 border-t border-glass-border/10 text-xs sm:text-sm text-sinag-text-muted/40">
-            <p>Copyright ©2025</p>
-            <div className="flex gap-4 sm:gap-8 text-center md:text-right">
-              <span>All rights reserved</span>
-              <span>Sinag</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+  <Footer />
     </div>
   );
 };

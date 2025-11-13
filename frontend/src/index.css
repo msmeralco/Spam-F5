@@ -9,6 +9,11 @@ All colors MUST be HSL.
 */
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #0F0F0F;
     color: #FFFFFF;

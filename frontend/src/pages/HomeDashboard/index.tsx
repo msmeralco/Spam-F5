@@ -6,8 +6,14 @@ import Achievements from '../../components/Achievements/Achievements';
 import { Sparkles, FileText, PieChart, Crown, Users, Zap } from "lucide-react";
 import '../../components/ui/glass-box.css';
 import { Button } from "@/components/ui/button";
+import Footer from '../../components/Footer';
+import { useEffect } from 'react';
+import { sinagContext } from '../../context/sinagContext';
+
+
 
 const HomeDashboard: React.FC = () => {
+  const { EnvironmentalImpact, toOffset } = React.useContext(sinagContext);
   const valueStyle: React.CSSProperties = {
     fontFamily: "'Space Grotesk', sans-serif",
     fontWeight: 1000, // Slightly bolder for values
@@ -22,6 +28,10 @@ const HomeDashboard: React.FC = () => {
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   };
+
+    useEffect(() => {
+    document.title = "Dashboard | Sinag";
+  }, []);
 
   const summaryBoxClasses = "p-4 bg-neutral flex flex-col items-center justify-center";
 
@@ -38,7 +48,7 @@ const HomeDashboard: React.FC = () => {
     {/* Left side: Greeting + subtext */}
     
     <div className="flex flex-col items-start">
-      <h1 style={valueStyle}>Welcome Back, Kien!</h1>
+      <h1 style={valueStyle}>Welcome Back!</h1>
       <p className="mt-2 text-sm text-neutral-400">
         Here’s your energy performance this month.
       </p>
@@ -65,7 +75,7 @@ const HomeDashboard: React.FC = () => {
           <div className="glass-box rounded-lg p-6">
             <h3 className="font-semibold">Carbon Impact</h3>
             <p className="mt-2 text-sm text-neutral-400">
-              Your savings = <strong>14.5 kg CO₂</strong> avoided — planting <strong>2 trees</strong> 🌱
+              Your savings = <strong>{EnvironmentalImpact} kg CO₂</strong> avoided — planting <strong>{toOffset} trees</strong> 🌱
             </p>
           </div>
 
@@ -82,7 +92,7 @@ const HomeDashboard: React.FC = () => {
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <div className="glass-box z-0 rounded-lg p-6">
-            <h2 className="text-lg font-semibold mb-3">AI Insights</h2>
+            <h2 className="text-lg font-semibold mb-3">AI Insights & Recommendation</h2>
             <GeminiChat />
           </div>
         </div>
@@ -91,35 +101,7 @@ const HomeDashboard: React.FC = () => {
           <Achievements />
         </div>
       </section>
-      {/* Footer */}
-      <footer className="relative py-12 sm:py-16 px-4 sm:px-6 border-t border-glass-border/10 z-10">
-        <div className="container mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <Zap className="w-5 sm:w-6 h-5 sm:h-6 text-sinag-orange-start" />
-              <span className="text-lg sm:text-xl font-bold text-sinag-text">Sinag</span>
-            </div>
-            <p className="text-xs sm:text-sm text-sinag-text-muted/60 max-w-xs sm:max-w-md mb-4 sm:mb-6">
-              Empowering every Filipino to light up a sustainable tomorrow.
-            </p>
-            <Button
-              variant="outline"
-              className="text-xs sm:text-sm border-glass-border/20 bg-glass-bg/5 text-sinag-text hover:bg-glass-bg/10"
-            >
-              Shine with Sinag
-            </Button>
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 sm:pt-8 border-t border-glass-border/10 text-xs sm:text-sm text-sinag-text-muted/40">
-            <p>Copyright ©2025</p>
-            <div className="flex gap-4 sm:gap-8 text-center md:text-right">
-              <span>All rights reserved</span>
-              <span>Sinag</span>
-            </div>
-          </div>
-        </div>
-      </footer>
-    
+     <Footer />
     </>
   );
 };

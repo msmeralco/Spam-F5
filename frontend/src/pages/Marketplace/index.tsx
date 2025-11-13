@@ -4,6 +4,8 @@ import RedeemModal from '../../components/RedeemModal/RedeemModal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
+import Footer from '../../components/Footer';
 
 type Category = 'All' | 'Appliance' | 'Voucher' | 'Donation' | 'Partner';
 
@@ -35,7 +37,7 @@ const Marketplace: React.FC = () => {
     return rewards.filter((r) => r.category === filter);
   }, [filter, rewards]);
 
-  const partners = ['Meralco', 'SM Appliance', 'Anihan Foundation'];
+  const partners = ['Meralco', 'PE2', 'IBPAP', 'PGBC', 'PISI', 'SEIPI'];
   useEffect(() => {
       const path = location.pathname.toLowerCase();
       if (path.includes('/community')) setActiveNav('Community');
@@ -48,6 +50,17 @@ const Marketplace: React.FC = () => {
     
   return (
     <>
+
+        {/* Glassmorphic Badge */}
+        <div
+          className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 rounded-full backdrop-blur-md bg-glass-bg/5 border border-glass-border/5 mb-4 sm:mb-8 tracking-tight"
+          style={{
+            boxShadow: "inset 0 2px 12px rgba(255, 255, 255, 0.04)"
+          }}
+        >
+          <Sparkles className="w-3 sm:w-4 h-3 sm:h-4 text-[#FDA205]" />
+          <span className="text-xs sm:text-sm text-[#B4AFA8] font-secondary">Your Sinag Rewards</span>
+        </div>
               
       <section className="mb-6">
         <h1 className="text-3xl font-semibold mb-2">Rewards Exchange</h1>
@@ -57,10 +70,21 @@ const Marketplace: React.FC = () => {
       {/* Partner carousel */}
       <section className="mb-6">
         <div className="overflow-x-auto py-3">
-          <div className="flex gap-6 items-center px-2">
+          <div className="flex gap-4 sm:gap-6 items-center px-2">
             {partners.map((p) => (
-              <div key={p} className="flex-shrink-0 w-48 h-20 bg-neutral border border-neutral-800 rounded flex items-center justify-center text-sm text-neutral-300">
-                {p}
+              <div key={p} className="flex-shrink-0 w-40 sm:w-48 h-20 rounded flex items-center justify-center" 
+                style={{
+                  background: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  boxShadow: "inset 0 2px 12px rgba(255, 255, 255, 0.04)"
+                }}
+              >
+                <img 
+                  src={`/${p.toUpperCase()}.png`} 
+                  alt={p}
+                  className="w-[90%] h-[90%] object-contain"
+                />
               </div>
             ))}
           </div>
@@ -74,14 +98,18 @@ const Marketplace: React.FC = () => {
             <button
               key={c}
               onClick={() => setFilter(c)}
-              className={`px-3 py-1 text-sm rounded ${filter === c ? 'bg-blue-600 text-white' : 'bg-neutral text-neutral-300 border border-neutral-800'}`}
+              className={`px-3 py-1 text-sm rounded transition-all ${filter === c ? 'bg-[#FE9126] text-white' : 'text-neutral-300'}`}
+              style={filter === c ? {} : {
+                background: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                boxShadow: "inset 0 2px 12px rgba(255, 255, 255, 0.04)"
+              }}
             >
               {c}
             </button>
           ))}
         </div>
-
-        <div className="text-sm text-neutral-400">Community Goal: When users collectively save <strong>10,000 kWh</strong>, Meralco will plant <strong>500 trees</strong> 🌳</div>
       </section>
 
       {/* Rewards grid */}
@@ -90,6 +118,7 @@ const Marketplace: React.FC = () => {
       </section>
 
       {isRedeemOpen && <RedeemModal onClose={() => setIsRedeemOpen(false)} tokenBalance={75} />}
+        <Footer />
     </>
   );
 };

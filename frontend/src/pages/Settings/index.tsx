@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
+import Footer from '../../components/Footer';
 
 const Settings: React.FC = () => {
   const [name, setName] = useState('Kien');
@@ -156,6 +157,7 @@ const Settings: React.FC = () => {
           {saved && <div className="text-sm text-emerald-400">Settings saved.</div>}
         </div>
       </form>
+    <Footer />
     </div>
   );
 };

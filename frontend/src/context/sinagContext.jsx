@@ -16,6 +16,8 @@ export default function SinagContext({children}) {
     const [sinagTokens, setSinagTokens] = useState(0);
     const [rate, setRate] = useState(0);
     const [history, setHistory] = useState([]);
+    const [EnvironmentalImpact, setEnvironmentalImpact] = useState(0);
+    const [toOffset, setToOffset] = useState(0);
 
     const update_currentUsage = (usage) => {
         setCurrentUsage(usage);
@@ -49,14 +51,20 @@ export default function SinagContext({children}) {
         // entry should be { month, billAmount, tokensEarned, status }
         setHistory(prev => [...prev, entry]);
     }
+    
+    const update_environmentalImpact = (impact) => {
+        setEnvironmentalImpact(impact);
+    }
 
-
+    const update_toOffset = (offset) => {
+        setToOffset(offset);
+    }
 
 
     return(
         <sinagContext.Provider value={{address, Baseline, currentUsage, energySaved, sinagTokens, rate, history,
         update_address, update_Baseline, update_currentUsage, update_energySaved, update_sinagTokens, update_rate, 
-        update_History, add_HistoryEntry}}>
+        update_History, add_HistoryEntry , EnvironmentalImpact, update_environmentalImpact, toOffset, update_toOffset}}>
             {children}
         </sinagContext.Provider>
     )

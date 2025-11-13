@@ -25,12 +25,12 @@ const GeminiChat: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-4 p-3 bg-neutral-900 rounded">
+      {/* <div className="mt-4 p-3 bg-neutral-900 rounded">
         <div className="text-sm text-neutral-400">Gemini chat widget (placeholder)</div>
         <div className="mt-2">
           <input className="w-full p-2 rounded bg-neutral-800 border border-neutral-700 text-sm" placeholder="Ask: 'How can I save energy during hot months?'" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

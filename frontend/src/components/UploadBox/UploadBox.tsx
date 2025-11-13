@@ -31,7 +31,9 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
     update_energySaved, 
     update_rate, 
     update_sinagTokens,
-    update_History 
+    update_History,
+    update_environmentalImpact,
+    update_toOffset
   } = React.useContext(sinagContext);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -89,19 +91,42 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
         console.log('OCR Response:', data);
         setRes(data);
 
-        // Update context with all the data from backend
+        // Update context with all the data from backend JSON
         if (data && !data.error) {
-          // Update individual metrics
+          // Map backend fields to context
           update_Baseline(data.baseline || 0);
-          console.log(data.baseline);
-          update_currentUsage(data.current_usage || 0);
-          console.log(data.current_usage);
-          update_energySaved(data.energy_saved || 0);
-          console.log(data.energy_saved);
-          update_rate(data.rate_this_month || 0);
-          console.log(data.rate_this_month);
-          update_sinagTokens(data.Token_reward || 0);
-          console.log(data.Token_reward);
+          console.log('Baseline:', data.baseline);
+          
+          update_currentUsage(data.currentUsage || 0);
+          console.log('Current Usage:', data.currentUsage);
+          
+          update_energySaved(data.energySaved || 0);
+          console.log('Energy Saved:', data.energySaved);
+          
+          update_rate(data.rate || 0);
+          console.log('Rate:', data.rate);
+          
+          update_sinagTokens(data.sinagTokens || 0);
+          console.log('SINAG Tokens:', data.sinagTokens);
+
+          update_environmentalImpact(data.Environmental_Impact || 0);
+          console.log('Environmental Impact:', data.Environmental_Impact);
+
+          update_toOffset(data.To_Offset_Emissions || 0);
+          console.log('To Offset:', data.To_Offset_Emissions);
+          
+          // Map history with correct field names
+          const mappedHistory = (data.history || []).map((entry: any) => ({
+            month: entry.month,
+            kwh: entry.kWh_consumed,
+            energy_saved: entry.energySaved || 0,
+            tokensEarned: entry.tokensEarned
+          }));
+          update_History(mappedHistory);
+          console.log('History:', mappedHistory);
+
+          // Show success message
+          alert(`✅ Bill processed! You earned ${data.sinagTokens || 0} SINAG tokens!`);
 
       //     // Request backend to mint SINAG tokens to user's wallet
       //     if (data.Token_reward && data.Token_reward > 0 && wallet) {

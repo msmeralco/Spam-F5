@@ -6,6 +6,7 @@ import BaselineChart from '../../components/Charts/BaselineChart';
 import LightRays from '@/components/LightRays';
 import { Sparkles, Receipt, FileText, PieChart, Crown, Users, Zap, History } from "lucide-react";
 import { useEffect } from 'react';
+import Footer from '../../components/Footer'; 
 
 const BillTracker: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -23,6 +24,7 @@ const BillTracker: React.FC = () => {
   return (
 
     <>
+      <section className="mb-8">
         {/* Glassmorphic Badge */}
         <div
           className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 rounded-full backdrop-blur-md bg-glass-bg/5 border border-glass-border/5 mb-4 sm:mb-8 tracking-tight"
@@ -35,8 +37,7 @@ const BillTracker: React.FC = () => {
         </div>
 
       {/* Header */}
-      <section className="mb-8">
-        <h1 className="text-4xl font-semibold mb-2">Bill Management</h1>
+        <h1 className="text-3xl font-semibold mb-2">Bill Management</h1>
         <p className="text-sm font-secondary text-neutral-400">Upload and view your historical Meralco bills. Our AI will automatically parse and analyze them.</p>
       </section>
 
@@ -83,6 +84,7 @@ const BillTracker: React.FC = () => {
           <BaselineChart />
         </div>
       </section>
+      <Footer />
     </>
   );
 };

@@ -4,6 +4,7 @@ import TokenHistory from '../../components/TokenHistory/TokenHistory';
 import RedeemModal from '../../components/RedeemModal/RedeemModal';
 import { Sparkles, History } from 'lucide-react';
 import { useEffect } from 'react';
+import Footer from '../../components/Footer';
 
 const Wallet: React.FC = () => {
     useEffect(() => {
@@ -150,6 +151,7 @@ const Wallet: React.FC = () => {
     {/* //   {isRedeemModalOpen && ( */}
     {/* //     <RedeemModal onClose={() => setIsRedeemModalOpen(false)} tokenBalance={tokenBalance} />
     //   )} */}
+        <Footer />
     </div>
   ); 
 };
