@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useActiveWallet, useWalletBalance, useSendTransaction } from 'thirdweb/react';
+import { useActiveWallet, useWalletBalance, useSendTransaction, useReadContract } from 'thirdweb/react';
 import { client } from '../../client';
-import { sepolia } from 'thirdweb/chains';
-import { prepareTransaction, toWei } from 'thirdweb';
-import { burn } from 'thirdweb/extensions/erc20';
+import { sepolia, defineChain } from 'thirdweb/chains';
+import { prepareTransaction, toWei, getContract } from 'thirdweb';
+import { burn, balanceOf } from 'thirdweb/extensions/erc20';
 
 
 
@@ -100,33 +100,36 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
     },
   ];
 
-  const handleRedeem = () => {
-    if (selectedReward && tokenBalance >= selectedReward.cost) {
-
-      setIsConfirming(true);
-      // Simulate redemption
-      setTimeout(() => {
-        alert(`✅ Successfully redeemed "${selectedReward.title}" for ${selectedReward.cost} SIN!`);
-        setSelectedReward(null);
-        setIsConfirming(false);
-        onClose();
-      }, 1000);
-    }
-  };
 
   
   const canRedeem = selectedReward && tokenBalance >= selectedReward.cost;
   const wallet = useActiveWallet();
   const { mutate: sendTx } = useSendTransaction();
 
-  // ✅ Only call the hook when wallet exists
-  const { data, isLoading, isError } = useWalletBalance({
+  // SINAG Token Contract on Sepolia
+  const sinagContract = getContract({
+    client,
+    chain: defineChain(11155111), // Sepolia chain ID
+    address: "0x8cFeCD58d76074a81e679108129832F0Fd50238C",
+  });
+
+  // Get SINAG token balance
+  const { data: sinagBalance, isLoading: isLoadingSinag } = useReadContract(
+    balanceOf,
+    {
+      contract: sinagContract,
+      address: wallet?.getAccount()?.address || "0x0",
+    }
+  );
+
+  // ✅ Get ETH balance (optional, for display)
+  const { data: ethBalance, isLoading, isError } = useWalletBalance({
     client,
     chain: sepolia,
     address: wallet?.getAccount()?.address,
   });
 
-  const burnSepoliaETH = async () => {
+  const burnSinagTokens = async () => {
     if (!wallet) {
       alert("No wallet connected");
       return;
@@ -138,32 +141,42 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
       return;
     }
 
-    // Burn by sending to zero address
-    const burnAmount = "0.001"; // Amount to burn in ETH
-    
-    const transaction = prepareTransaction({
-      client,
-      chain: sepolia,
-      to: "0x0000000000000000000000000000000000000000", // Zero address = burn
-      value: toWei(burnAmount),
-    });
+    if (!selectedReward) {
+      alert("No reward selected");
+      return;
+    }
+
+    if (tokenBalance < selectedReward.cost) {
+      alert("Insufficient SINAG tokens");
+      return;
+    }
+
+    setIsConfirming(true);
 
     try {
-      if (selectedReward && tokenBalance >= selectedReward.cost) {
+      // Burn SINAG tokens (send to burn function of the contract)
+      const burnAmount = BigInt(selectedReward.cost * 10**18); // Convert to wei (assuming 18 decimals)
+      
+      const transaction = burn({
+        contract: sinagContract,
+        amount: burnAmount,
+      });
+
       sendTx(transaction, {
         onSuccess: (result) => {
-          
-          alert(`✅ Successfully redeemed "${selectedReward.title}" for ${selectedReward.cost} SIN!`)
+          alert(`✅ Successfully redeemed "${selectedReward.title}" for ${selectedReward.cost} SINAG!`);
+          setIsConfirming(false);
+          onClose();
         },
         onError: (error) => {
           alert(`Error burning tokens: ${error.message}`);
+          setIsConfirming(false);
         },
-      })
-    };
+      });
     } catch (error: any) {
       alert(`Error: ${error.message}`);
+      setIsConfirming(false);
     }
-  
   };
   
 
@@ -186,7 +199,14 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
           {/* Token Balance Info */}
           <div className="mb-6 p-4 bg-neutral-800/50 border border-neutral-700 rounded">
             <p className="text-sm text-neutral-400">Your available balance</p>
-            <p className="text-2xl font-bold text-emerald-400">{tokenBalance} SINAG</p>
+            <p className="text-2xl font-bold text-emerald-400">
+              {isLoadingSinag ? "Loading..." : `${Number(sinagBalance || 0n) / 10**18} SINAG`}
+            </p>
+            {ethBalance && (
+              <p className="text-xs text-neutral-500 mt-1">
+                ETH Balance: {Number(ethBalance.displayValue).toFixed(4)} ETH
+              </p>
+            )}
           </div>
 
           {/* Rewards Grid */}
@@ -258,7 +278,7 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
                   Back
                 </button>
                 <button
-                  onClick={burnSepoliaETH}
+                  onClick={burnSinagTokens}
                   disabled={!canRedeem || isConfirming}
                   className={`flex-1 px-4 py-3 rounded text-white font-medium transition ${
                     canRedeem && !isConfirming

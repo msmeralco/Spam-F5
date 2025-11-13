@@ -85,7 +85,7 @@ const ConsumptionChart: React.FC = () => {
 
       {/* Tooltip */}
       {hoverIndex !== null && (
-        <div className="absolute -mt-2 p-2 bg-neutral-800 border border-neutral-700 text-sm rounded text-white" style={{ left: `${(hoverIndex / (data.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}>
+        <div className="absolute -mt-2 p-2 bg-neutral-800 border border-neutral-700 text-sm rounded text-white z-50" style={{ left: `${(hoverIndex / (data.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}>
           <div className="font-medium">{data[hoverIndex].month}</div>
           <div className="text-xs text-neutral-300">Actual: {data[hoverIndex].actual} kWh</div>
           <div className="text-xs text-neutral-300">Baseline: {data[hoverIndex].baseline} kWh</div>

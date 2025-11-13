@@ -59,7 +59,7 @@ const Hero = () => {
         noiseAmount={0.1}
         distortion={0.05}
         className="custom-rays absolute inset-0 z-10"
-      />
+      /> 
 
         {/* Radial Gradient Circle at top */}
         {/* <div
@@ -113,18 +113,6 @@ const Hero = () => {
     <section className="relative py-8 sm:py-16 lg:py-24 px-4 sm:px-6 z-10">
       {/* Right-side Light Rays */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 z-0 pointer-events-none h-full">
-        <LightRays
-          raysOrigin="right"
-          raysColor="#FDA205"
-          raysSpeed={1.5}
-          lightSpread={1.2}
-          rayLength={0.7}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0.1}
-          distortion={0.05}
-          className="custom-rays"
-        />
       </div>
 
       <div className="container mx-auto relative z-10">

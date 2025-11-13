@@ -58,7 +58,7 @@ const TokenHistory: React.FC = () => {
     <div className="space-y-2">
       {transactions.map((tx) => (
       <div
-        className="flex items-center justify-between p-4 rounded transition"
+        className="flex items-center justify-between p-4 rounded-[16px] transition"
         style={{
           background: "rgba(255, 255, 255, 0.05)",   // glass background
           backdropFilter: "blur(12px)",              // glass blur

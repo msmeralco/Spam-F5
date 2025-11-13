@@ -1,0 +1,7 @@
+.glass-box {
+    background: #FFFFFF08;
+    border: 1px solid #FFFFFF05;
+    box-shadow: 0px 1px 1px 1.3px #FFFFFF1F inset;
+    backdrop-filter: blur(32px);
+    
+}

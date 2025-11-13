@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
-import { base } from 'thirdweb/chains';
+import { sinagContext } from '@/context/sinagContext';
+import { createThirdwebClient, getContract } from "thirdweb";
+import { defineChain } from "thirdweb/chains";
+import { client } from '@/client';
+import { mintTo } from 'thirdweb/extensions/erc20';
+import { useActiveWallet, useSendTransaction } from 'thirdweb/react';
 
 interface UploadBoxProps {
   onFileSelect?: (file: File) => void;
 }
 
 const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
+
+  const contract = getContract({
+  client,
+  chain: defineChain(11155111),
+  address: "0x8cFeCD58d76074a81e679108129832F0Fd50238C",
+  });
+
+  const wallet = useActiveWallet();
+  const { mutate: sendTransaction } = useSendTransaction();
+
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const baseUrl = import.meta.env.VITE_BACKEND_URL ; // Example base URL
   const [res, setRes] = useState<any>(null);
+  const { 
+    update_Baseline, 
+    update_currentUsage, 
+    update_energySaved, 
+    update_rate, 
+    update_sinagTokens,
+    update_History 
+  } = React.useContext(sinagContext);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -65,13 +88,74 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
         const data = await response.json();
         console.log('OCR Response:', data);
         setRes(data);
+
+        // Update context with all the data from backend
+        if (data && !data.error) {
+          // Update individual metrics
+          update_Baseline(data.baseline || 0);
+          console.log(data.baseline);
+          update_currentUsage(data.current_usage || 0);
+          console.log(data.current_usage);
+          update_energySaved(data.energy_saved || 0);
+          console.log(data.energy_saved);
+          update_rate(data.rate_this_month || 0);
+          console.log(data.rate_this_month);
+          update_sinagTokens(data.Token_reward || 0);
+          console.log(data.Token_reward);
+
+      //     // Request backend to mint SINAG tokens to user's wallet
+      //     if (data.Token_reward && data.Token_reward > 0 && wallet) {
+      //       const userAddress = wallet.getAccount()?.address;
+            
+      //       if (userAddress) {
+      //         try {
+      //           const mintResponse = await fetch(`${baseUrl}/mint-tokens`, {
+      //             method: 'POST',
+      //             headers: {
+      //               'Content-Type': 'application/json',
+      //             },
+      //             body: JSON.stringify({
+      //               address: userAddress,
+      //               amount: data.Token_reward,
+      //             }),
+      //           });
+
+      //           if (mintResponse.ok) {
+      //             const mintData = await mintResponse.json();
+      //             console.log('✅ Tokens minted successfully:', mintData);
+      //             alert(`🎉 You've earned ${data.Token_reward} SINAG tokens!`);
+      //           } else {
+      //             const errorText = await mintResponse.text();
+      //             console.error('Error minting tokens:', errorText);
+      //             alert(`Error receiving tokens: ${errorText}`);
+      //           }
+      //         } catch (mintError: any) {
+      //           console.error('Mint request failed:', mintError);
+      //           alert(`Failed to mint tokens: ${mintError.message}`);
+      //         }
+      //       } else {
+      //         alert('Please connect your wallet to receive tokens');
+      //       }
+      //     }
+
+      //     // Update history if available
+      //     if (data.history && Array.isArray(data.history)) {
+      //       update_History(data.history);
+      //     }
+      //   }
+      // } catch (error: any) {
+      //   console.error('OCR Error:', error);
+      //   alert(`Token Limit Reached. Please try again later.`);
+      //   setRes({ error: error.message });
+      // }
+        }
       } catch (error: any) {
         console.error('OCR Error:', error);
-        alert(`Token Limit Reached. Please try again later.`);
+        alert(`error occurred during OCR processing.`);
         setRes({ error: error.message });
       }
-    }
-  };
+    };
+  }
 
   return (
     <div

@@ -85,7 +85,11 @@ const BaselineChart: React.FC = () => {
       {hoverIndex !== null && (
         <div
           className="absolute -mt-2 p-3 bg-neutral-800 border border-neutral-700 text-sm rounded text-white"
-          style={{ left: `${(hoverIndex / (data.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}
+          style={{
+            left: `${(hoverIndex / (data.length - 1)) * 100}%`,
+            transform: 'translateX(-50%)',
+            zIndex: 50,
+          }}
         >
           <div className="font-semibold">{data[hoverIndex].month}</div>
           <div className="text-xs text-blue-300 mt-1">Baseline: {data[hoverIndex].baseline} kWh</div>

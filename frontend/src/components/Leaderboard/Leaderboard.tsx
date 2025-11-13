@@ -1,4 +1,6 @@
 import React from 'react';
+import { Crown } from 'lucide-react';
+import '../../components/ui/glass-box.css';
 
 export type LeaderboardRow = {
   rank: number;
@@ -25,36 +27,42 @@ const Leaderboard: React.FC<{ rows?: LeaderboardRow[]; currentUser?: string }> =
   const data = sample;
 
   return (
-    <div className="bg-neutral rounded border border-neutral-800 overflow-hidden">
-      <div className="p-4 border-b border-neutral-800">
-        <h3 className="font-semibold">Leaderboard</h3>
-        <p className="text-sm text-neutral-400">Top users by tokens and kWh saved</p>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-neutral-950/20">
-            <tr className="text-left">
-              <th className="px-4 py-3 font-medium text-neutral-300">Rank</th>
-              <th className="px-4 py-3 font-medium text-neutral-300">Username</th>
-              <th className="px-4 py-3 font-medium text-neutral-300 text-right">Tokens</th>
-              <th className="px-4 py-3 font-medium text-neutral-300 text-right">kWh Saved</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row) => {
-              const isCurrent = currentUser && row.username.toLowerCase() === currentUser.toLowerCase();
-              return (
-                <tr key={row.rank} className={`${isCurrent ? 'bg-emerald-900/20' : ''} border-b border-neutral-900`}>
-                  <td className="px-4 py-3">#{row.rank}</td>
-                  <td className="px-4 py-3">{row.username}{row.city ? <span className="text-xs text-neutral-500 ml-2">· {row.city}</span> : null}</td>
-                  <td className="px-4 py-3 text-right font-medium text-emerald-400">{row.tokens}</td>
-                  <td className="px-4 py-3 text-right text-neutral-200">{row.kwhSaved} kWh</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+    <div className="space-y-4">
+      {/* 🔹 Table Section */}
+      <div className="glass-box bg-neutral rounded border border-neutral-800 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-neutral-950/20">
+              <tr className="text-left">
+                <th className="px-4 py-3 font-medium text-neutral-300">Rank</th>
+                <th className="px-4 py-3 font-medium text-neutral-300">Username</th>
+                <th className="px-4 py-3 font-medium text-neutral-300">City</th>
+                <th className="px-4 py-3 font-medium text-neutral-300 text-right">Tokens</th>
+                <th className="px-8 py-3 font-medium text-neutral-300 text-right">kWh Saved</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((row) => {
+                const isCurrent =
+                  currentUser && row.username.toLowerCase() === currentUser.toLowerCase();
+                return (
+                  <tr
+                    key={row.rank}
+                    className={`${isCurrent ? 'bg-orange-900/10' : ''} border-b border-neutral-900`}
+                  >
+                    <td className="px-4 py-3">#{row.rank}</td>
+                    <td className="px-4 py-3">{row.username}</td>
+                    <td className="px-4 py-3 text-neutral-400">{row.city || '-'}</td>
+                    <td className="px-4 py-3 text-right font-medium text-orange-400">
+                      {row.tokens}
+                    </td>
+                    <td className="px-8 py-3 text-right text-neutral-200">{row.kwhSaved} kWh</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

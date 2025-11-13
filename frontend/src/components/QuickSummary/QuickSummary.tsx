@@ -1,12 +1,14 @@
 import React from 'react';
+import { sinagContext } from '@/context/sinagContext';
 
 const QuickSummary: React.FC = () => {
+  const { currentUsage, energySaved, sinagTokens, Baseline } = React.useContext(sinagContext);
   const labelStyle: React.CSSProperties = {
     fontFamily: "'Space Grotesk', sans-serif",
     fontWeight: 100, // Light weight for labels
     fontStyle: 'normal',
     fontSize: '14px',
-    lineHeight: '23.8px',
+    lineHeight: '20.8px',
     letterSpacing: '1px',
     textAlign: 'center',
     textTransform: 'uppercase',
@@ -28,30 +30,39 @@ const QuickSummary: React.FC = () => {
     WebkitTextFillColor: 'transparent', // Make text transparent to show gradient
   };
 
+  const sinagTokenValueStyle: React.CSSProperties = {
+    ...valueStyle,
+    background: 'none',
+    WebkitBackgroundClip: 'unset',
+    WebkitTextFillColor: 'unset',
+    color: '#FE9126',
+  };
+
   const summaryBoxClasses = "p-4 bg-neutral flex flex-col items-center justify-center";
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border-l border-transparent">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-0 border-l border-transparent">
       {/* Current Usage */}
       <div className={`${summaryBoxClasses} border-r border-white/20`}>
         <span style={labelStyle}>Current Usage</span>
-        <strong style={valueStyle}>345 kWh</strong>
+        <strong style={valueStyle}>{currentUsage || 0} kWh</strong>
       </div>
       {/* Energy Saved */}
       <div className={`${summaryBoxClasses} border-r border-white/20`}>
         <span style={labelStyle}>Energy Saved</span>
-        <strong style={valueStyle}>29 kWh</strong>
+        <strong style={valueStyle}>{energySaved || 0} kWh</strong>
       </div>
       {/* Sinag Tokens */}
       <div className={`${summaryBoxClasses} border-r border-white/20`}>
         <span style={labelStyle}>Sinag Tokens</span>
-        <strong style={valueStyle}>29 SIN</strong>
+        <strong style={valueStyle}>{sinagTokens || 0} SIN</strong>
       </div>
       {/* Bill Estimate */}
       <div className={summaryBoxClasses}>
-        <span style={labelStyle}>Bill Estimate</span>
-        <strong style={valueStyle}>₱2,450</strong>
+        <span style={labelStyle}>Baseline</span>
+        <strong style={valueStyle}>{Baseline || 0} kWh</strong>
       </div>
+      
     </div>
   );
 };

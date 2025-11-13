@@ -36,7 +36,7 @@ const Wallet: React.FC = () => {
 
       {/* Token Balance Section */}
           <section
-            className="mb-8 p-6 rounded-lg tracking-tight"
+            className="mb-8 p-6 rounded-[25px] tracking-tight"
             style={{
               background: "rgba(255, 255, 255, 0.05)", // light glass background
               backdropFilter: "blur(12px)",            // glass blur
