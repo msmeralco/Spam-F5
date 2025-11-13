@@ -59,11 +59,11 @@ const BillSummaryCards: React.FC = () => {
   const getStatusLabel = (status: Bill['status']) => {
     switch (status) {
       case 'verified':
-        return 'Verified & Analyzed';
+        return 'VERIFIED';
       case 'pending':
-        return 'Pending OCR';
+        return 'PENDING OCR';
       case 'low-quality':
-        return 'Low Data Quality';
+        return 'LOW DATA QUALITY';
     }
   };
 
@@ -72,20 +72,20 @@ const BillSummaryCards: React.FC = () => {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-neutral-800">
-            <th className="text-left py-3 px-4 font-semibold text-neutral-300">Bill Date</th>
-            <th className="text-right py-3 px-4 font-semibold text-neutral-300">kWh Consumed</th>
-            <th className="text-right py-3 px-4 font-semibold text-neutral-300">Bill Amount</th>
-            <th className="text-right py-3 px-4 font-semibold text-neutral-300">Tokens Earned</th>
-            <th className="text-center py-3 px-4 font-semibold text-neutral-300">Status</th>
+            <th className="text-left py-3 px-4 font-medium text-[#919191]">BILL DATE</th>
+            <th className="text-right py-3 px-4 font-medium text-[#919191]">KWH CONSUMED</th>
+            <th className="text-right py-3 px-4 font-medium text-[#919191]">BILL AMOUNT</th>
+            <th className="text-right py-3 px-4 font-medium text-[#919191]">TOKENS EARNED</th>
+            <th className="text-center py-3 px-4 font-medium text-[#919191]">STATUS</th>
           </tr>
         </thead>
         <tbody>
           {bills.map((bill) => (
             <tr key={bill.id} className="border-b border-neutral-900 hover:bg-neutral-900/50 transition">
-              <td className="py-3 px-4 text-neutral-200">{bill.date}</td>
-              <td className="py-3 px-4 text-right text-neutral-200">{bill.kwh} kWh</td>
-              <td className="py-3 px-4 text-right text-neutral-200">₱{bill.amount.toLocaleString('en-PH')}</td>
-              <td className="py-3 px-4 text-right text-emerald-400 font-semibold">{bill.tokensEarned} SIN</td>
+              <td className="py-3 px-4 text-neutral-200 font-bold text-[20px]">{bill.date}</td>
+              <td className="py-3 px-4 text-right text-neutral-200 font-bold text-[20px]">{bill.kwh} kWh</td>
+              <td className="py-3 px-4 text-right text-neutral-200 font-bold text-[20px]">₱{bill.amount.toLocaleString('en-PH')}</td>
+              <td className="py-3 px-4 text-right text-[#FE9126] font-bold text-[20px]">{bill.tokensEarned} SIN</td>
               <td className="py-3 px-4 text-center">
                 <div className="flex flex-col items-center gap-1">
                   <div>{getStatusIcon(bill.status)}</div>

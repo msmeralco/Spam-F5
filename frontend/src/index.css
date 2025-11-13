@@ -1,25 +1,103 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "slnt" 0;
-}
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
 
 @layer base {
   body {
     background-color: #0F0F0F;
     color: #FFFFFF;
+    background: radial-gradient(86.02% 172.05% at 50% -40%, #FDA205 0%, rgba(5, 5, 5, 0) 68%);
+  }
+  :root {
+    line-height: 1.5;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-primary);
+    --font-primary: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --font-secondary: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "slnt" 0;
+    
+    /* Design System Variables */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+
+    /* Sinag Design System - Dark Theme with Warm Accents */
+    --sinag-dark: 0 0% 6%;
+    --sinag-dark-secondary: 0 0% 10%;
+    --sinag-text: 0 0% 100%;
+    --sinag-text-muted: 0 0% 100%;
+    
+    /* Orange gradient colors */
+    --sinag-orange-start: 36 98% 51%;
+    --sinag-orange-end: 25 94% 48%;
+    
+    /* Glassmorphism */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 0 0% 6%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 100%;
+    
+    --sinag-dark: 0 0% 6%;
+    --sinag-dark-secondary: 0 0% 10%;
+    --sinag-text: 0 0% 100%;
+    --sinag-text-muted: 0 0% 100%;
+    --sinag-orange-start: 36 98% 51%;
+    --sinag-orange-end: 25 94% 48%;
+    --glass-bg: 0 0% 100%;
+    --glass-border: 0 0% 100%;
+  }
+}
+@layer base {
+  * {
+    border-color: hsl(var(--border));
   }
 }

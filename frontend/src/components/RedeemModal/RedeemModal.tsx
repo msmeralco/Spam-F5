@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import { useActiveWallet, useWalletBalance, useSendTransaction } from 'thirdweb/react';
+import { client } from '../../client';
+import { sepolia } from 'thirdweb/chains';
+import { prepareTransaction, toWei } from 'thirdweb';
+import { burn } from 'thirdweb/extensions/erc20';
+
+
 
 interface RedeemModalProps {
   onClose: () => void;
@@ -95,6 +102,7 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
 
   const handleRedeem = () => {
     if (selectedReward && tokenBalance >= selectedReward.cost) {
+
       setIsConfirming(true);
       // Simulate redemption
       setTimeout(() => {
@@ -106,7 +114,58 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
     }
   };
 
+  
   const canRedeem = selectedReward && tokenBalance >= selectedReward.cost;
+  const wallet = useActiveWallet();
+  const { mutate: sendTx } = useSendTransaction();
+
+  // ✅ Only call the hook when wallet exists
+  const { data, isLoading, isError } = useWalletBalance({
+    client,
+    chain: sepolia,
+    address: wallet?.getAccount()?.address,
+  });
+
+  const burnSepoliaETH = async () => {
+    if (!wallet) {
+      alert("No wallet connected");
+      return;
+    }
+
+    const account = wallet.getAccount();
+    if (!account) {
+      alert("No account found");
+      return;
+    }
+
+    // Burn by sending to zero address
+    const burnAmount = "0.001"; // Amount to burn in ETH
+    
+    const transaction = prepareTransaction({
+      client,
+      chain: sepolia,
+      to: "0x0000000000000000000000000000000000000000", // Zero address = burn
+      value: toWei(burnAmount),
+    });
+
+    try {
+      if (selectedReward && tokenBalance >= selectedReward.cost) {
+      sendTx(transaction, {
+        onSuccess: (result) => {
+          
+          alert(`✅ Successfully redeemed "${selectedReward.title}" for ${selectedReward.cost} SIN!`)
+        },
+        onError: (error) => {
+          alert(`Error burning tokens: ${error.message}`);
+        },
+      })
+    };
+    } catch (error: any) {
+      alert(`Error: ${error.message}`);
+    }
+  
+  };
+  
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
@@ -199,7 +258,7 @@ const RedeemModal: React.FC<RedeemModalProps> = ({ onClose, tokenBalance }) => {
                   Back
                 </button>
                 <button
-                  onClick={handleRedeem}
+                  onClick={burnSepoliaETH}
                   disabled={!canRedeem || isConfirming}
                   className={`flex-1 px-4 py-3 rounded text-white font-medium transition ${
                     canRedeem && !isConfirming

@@ -13,6 +13,10 @@ const Marketplace: React.FC = () => {
   const [activeNav, setActiveNav] = useState<string>('Dashboard');
     const navigate = useNavigate();
     const location = useLocation();
+
+  useEffect(() => {
+    document.title = "Rewards | Sinag";
+  }, []);
   
   const rewards = useMemo(
     () => [
@@ -46,7 +50,7 @@ const Marketplace: React.FC = () => {
     <>
               
       <section className="mb-6">
-        <h1 className="text-3xl font-semibold mb-2">Rewards Marketplace</h1>
+        <h1 className="text-3xl font-semibold mb-2">Rewards Exchange</h1>
         <p className="text-sm text-neutral-400">Redeem your SINAG tokens for products, vouchers, donations, and partner discounts.</p>
       </section>
 

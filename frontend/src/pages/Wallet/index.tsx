@@ -2,42 +2,74 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import TokenHistory from '../../components/TokenHistory/TokenHistory';
 import RedeemModal from '../../components/RedeemModal/RedeemModal';
+import { Sparkles, History } from 'lucide-react';
+import { useEffect } from 'react';
 
 const Wallet: React.FC = () => {
+    useEffect(() => {
+      document.title = "Wallet | Sinag";
+    }, []);
+
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
   const tokenBalance = 75;
   const blockchainAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f42e0';
     
   return (
-    <div className="max-w-7xl mx-auto">  
+    <div className="max-w-7xl mx-auto"> 
+
+      {/* Glassmorphic Badge */}
+        <div
+          className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 rounded-full backdrop-blur-md bg-glass-bg/5 border border-glass-border/5 mb-4 sm:mb-8 tracking-tight"
+          style={{
+            boxShadow: "inset 0 2px 12px rgba(255, 255, 255, 0.04)"
+          }}
+        >
+          <Sparkles className="w-3 sm:w-4 h-3 sm:h-4 text-[#FDA205]" />
+          <span className="text-xs sm:text-sm text-[#B4AFA8] font-secondary">Your Sinag Wallet</span>
+        </div> 
       {/* Header */}
       <section className="mb-8">
-        <h1 className="text-3xl font-semibold mb-2">Token Wallet</h1>
-        <p className="text-sm text-neutral-400">Manage your SINAG tokens and redeem rewards</p>
+        <h1 className="text-3xl font-semibold mb-2 text-4xl tracking-tight">Token Wallet</h1>
+        <p className="text-sm text-neutral-400 font-secondary">Manage and save your Sinag tokens and redeem rewards.</p>
       </section>
 
       {/* Token Balance Section */}
-      <section className="mb-8 p-6 bg-gradient-to-br from-emerald-900/20 to-blue-900/20 border border-emerald-800/30 rounded-lg">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <section
+            className="mb-8 p-6 rounded-lg tracking-tight"
+            style={{
+              background: "rgba(255, 255, 255, 0.05)", // light glass background
+              backdropFilter: "blur(12px)",            // glass blur
+              border: "1px solid rgba(255, 255, 255, 0.1)", // subtle border
+              boxShadow: "inset 0 2px 12px rgba(255, 255, 255, 0.04)"
+            }}
+          >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
-            <p className="text-sm text-neutral-400 mb-2">Total Balance</p>
+            <p className="text-sm text-neutral-400 mb-2 font-secondary">Total Balance</p>
             <div className="flex items-baseline gap-3">
-              <span className="text-5xl font-bold text-emerald-400">{tokenBalance}</span>
-              <span className="text-2xl text-neutral-400">SINAG</span>
+          <span
+            className="text-5xl font-bold bg-clip-text text-transparent"
+            style={{
+              backgroundImage: "linear-gradient(to right, #F77700 0%, #FE9126 75%)",
+            }}
+          >
+            {tokenBalance}
+          </span>
+              <span className="text-2xl text-neutral-400 font-semibold">SINAG</span>
             </div>
-            <p className="text-xs text-neutral-500 mt-2">💰 Earned through energy savings & achievements</p>
+            <p className="text-xs text-neutral-500 mt-2 font-secondary">Earned through energy savings & achievements</p>
           </div>
 
           <div className="space-y-3">
-            <a
-              href={`https://etherscan.io/address/${blockchainAddress}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded text-white font-medium transition text-center"
-            >
-              🔗 View on Blockchain Explorer
-            </a>
+        <a
+          href={`https://etherscan.io/address/${blockchainAddress}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="h-10 sm:h-12 md:h-[45px] px-6 sm:px-8 bg-gradient-to-b from-sinag-orange-start to-sinag-orange-end hover:opacity-90 transition-opacity rounded-[50px] text-black font-medium text-sm sm:text-base shadow-lg shadow-sinag-orange-start/20 flex items-center justify-center"
+        >
+          View on Blockchain Explorer
+        </a>
             <div className="text-xs text-neutral-500 text-center break-all">
               Address: {blockchainAddress.slice(0, 10)}...{blockchainAddress.slice(-8)}
             </div>
@@ -47,16 +79,19 @@ const Wallet: React.FC = () => {
 
       {/* Token History Section */}
       <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">Transaction History</h2>
+        <div className="flex items-center gap-2.5 mb-5">
+          <History className="w-5 sm:w-6 h-5 sm:h-6 text-sinag-orange-start" />
+          <h2 className="text-lg font-semibold mb-0">Transaction History</h2>
+        </div>
         <TokenHistory />
       </section>
 
-      {/* Redeem Rewards Section */}
+      {/* Redeem Rewards Section
       <section>
         <h2 className="text-lg font-semibold mb-4">Redeem Rewards</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Energy Bill Rebates */}
-          <div className="p-4 bg-neutral-900 border border-neutral-800 rounded hover:border-neutral-700 transition">
+          {/* <div className="p-4 bg-neutral-900 border border-neutral-800 rounded hover:border-neutral-700 transition">
             <div className="text-2xl mb-2">💡</div>
             <h3 className="font-semibold mb-2">Energy Bill Rebates</h3>
             <p className="text-sm text-neutral-400 mb-4">Get discounts on your next electricity bill</p>
@@ -71,10 +106,10 @@ const Wallet: React.FC = () => {
             >
               Redeem
             </button>
-          </div>
+          </div> */}
 
           {/* Eco-friendly Products */}
-          <div className="p-4 bg-neutral-900 border border-neutral-800 rounded hover:border-neutral-700 transition">
+          {/* <div className="p-4 bg-neutral-900 border border-neutral-800 rounded hover:border-neutral-700 transition">
             <div className="text-2xl mb-2">🛒</div>
             <h3 className="font-semibold mb-2">Eco-friendly Products</h3>
             <p className="text-sm text-neutral-400 mb-4">Shop sustainable items with your tokens</p>
@@ -89,10 +124,10 @@ const Wallet: React.FC = () => {
             >
               Redeem
             </button>
-          </div>
+          </div> */}
 
           {/* Partner Store Discounts */}
-          <div className="p-4 bg-neutral-900 border border-neutral-800 rounded hover:border-neutral-700 transition">
+          {/* <div className="p-4 bg-neutral-900 border border-neutral-800 rounded hover:border-neutral-700 transition">
             <div className="text-2xl mb-2">🎁</div>
             <h3 className="font-semibold mb-2">Partner Discounts</h3>
             <p className="text-sm text-neutral-400 mb-4">Exclusive deals from our partners</p>
@@ -109,14 +144,14 @@ const Wallet: React.FC = () => {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Redeem Modal */}
-      {isRedeemModalOpen && (
-        <RedeemModal onClose={() => setIsRedeemModalOpen(false)} tokenBalance={tokenBalance} />
-      )}
+    {/* //   {isRedeemModalOpen && ( */}
+    {/* //     <RedeemModal onClose={() => setIsRedeemModalOpen(false)} tokenBalance={tokenBalance} />
+    //   )} */}
     </div>
-  );
+  ); 
 };
 
 export default Wallet;

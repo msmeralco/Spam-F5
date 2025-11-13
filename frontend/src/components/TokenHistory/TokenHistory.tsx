@@ -14,42 +14,42 @@ const TokenHistory: React.FC = () => {
       id: '1',
       amount: 5,
       description: 'Saved 5 kWh',
-      date: 'Nov 13, 2025',
+      date: 'NOV. 13, 2025',
       type: 'earn',
     },
     {
       id: '2',
       amount: 10,
       description: 'Challenge Completed: 5% Saver',
-      date: 'Nov 12, 2025',
+      date: 'NOV. 12, 2025',
       type: 'earn',
     },
     {
       id: '3',
       amount: 20,
       description: 'Redeemed for 5% Bill Rebate',
-      date: 'Nov 10, 2025',
+      date: 'NOV. 10, 2025',
       type: 'spend',
     },
     {
       id: '4',
       amount: 8,
       description: 'Daily streak bonus (7 days)',
-      date: 'Nov 9, 2025',
+      date: 'NOV. 9, 2025',
       type: 'earn',
     },
     {
       id: '5',
       amount: 15,
       description: 'Redeemed LED Bulb Pack',
-      date: 'Nov 5, 2025',
+      date: 'NOV. 5, 2025',
       type: 'spend',
     },
     {
       id: '6',
       amount: 12,
       description: 'Energy savings achievement',
-      date: 'Oct 28, 2025',
+      date: 'OCT. 28, 2025',
       type: 'earn',
     },
   ];
@@ -57,10 +57,15 @@ const TokenHistory: React.FC = () => {
   return (
     <div className="space-y-2">
       {transactions.map((tx) => (
-        <div
-          key={tx.id}
-          className="flex items-center justify-between p-4 bg-neutral-900 border border-neutral-800 rounded hover:bg-neutral-800/50 transition"
-        >
+      <div
+        className="flex items-center justify-between p-4 rounded transition"
+        style={{
+          background: "rgba(255, 255, 255, 0.05)",   // glass background
+          backdropFilter: "blur(12px)",              // glass blur
+          border: "1px solid rgba(255, 255, 255, 0.1)", // subtle border
+          boxShadow: "inset 0 2px 12px rgba(255, 255, 255, 0.04)"
+        }}
+      >
           <div className="flex items-center gap-4 flex-1">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
@@ -72,8 +77,8 @@ const TokenHistory: React.FC = () => {
               {tx.type === 'earn' ? '📈' : '📉'}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-neutral-200">{tx.description}</p>
-              <p className="text-xs text-neutral-500">{tx.date}</p>
+              <p className="text-md text-neutral-200 font-bold">{tx.description}</p>
+              <p className="text-xs text-neutral-500 font-mediumtracking-wider">{tx.date}</p>
             </div>
           </div>
           <div className={`text-lg font-bold ${tx.type === 'earn' ? 'text-emerald-400' : 'text-orange-400'}`}>

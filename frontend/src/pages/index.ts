@@ -6,3 +6,4 @@ export { default as Wallet } from './Wallet';
 export { default as Marketplace } from './Marketplace';
 export { default as Community } from './Community';
 export { default as Settings } from './Settings';
+export { default as LandingPage } from './LandingPage';

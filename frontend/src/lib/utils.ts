@@ -1,7 +1,6 @@
-export function formatKwh(value: number) {
-  return `${value} kWh`;
-}
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-export function formatCurrencyPhp(value: number) {
-  return `₱${value.toLocaleString('en-PH')}`;
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

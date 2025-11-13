@@ -12,6 +12,10 @@ const Settings: React.FC = () => {
   const [activeNav, setActiveNav] = useState<string>('Settings');
       const navigate = useNavigate();
       const location = useLocation();
+
+        useEffect(() => {
+          document.title = "Profile | Sinag";
+        }, []);
     
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
