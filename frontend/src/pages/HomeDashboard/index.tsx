@@ -13,7 +13,7 @@ import { sinagContext } from '../../context/sinagContext';
 
 
 const HomeDashboard: React.FC = () => {
-  const { EnvironmentalImpact, toOffset } = React.useContext(sinagContext);
+  const { EnvironmentalImpact, toOffset, savedPercentage } = React.useContext(sinagContext);
   const valueStyle: React.CSSProperties = {
     fontFamily: "'Space Grotesk', sans-serif",
     fontWeight: 1000, // Slightly bolder for values
@@ -82,7 +82,7 @@ const HomeDashboard: React.FC = () => {
           <div className="glass-box rounded-lg p-6">
             <h3 className="font-semibold">Quick Insight</h3>
             <p className="mt-2 text-sm text-neutral-400">
-              You reduced usage by <strong>8%</strong> vs last month. Keep it up!
+              You reduced usage by <strong>{savedPercentage}%</strong> vs last month. Keep it up!
             </p>
           </div>
         </aside>

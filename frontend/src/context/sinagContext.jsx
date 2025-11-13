@@ -18,6 +18,13 @@ export default function SinagContext({children}) {
     const [history, setHistory] = useState([]);
     const [EnvironmentalImpact, setEnvironmentalImpact] = useState(0);
     const [toOffset, setToOffset] = useState(0);
+    const [message, setMessage] = useState("Please upload your bill in the Bill Tracker");
+    const [suggestions, setSuggestions] = useState("Please insert your bill to get suggestions.");
+    const [savedPercentage, setSavedPercentage] = useState(0);
+    
+    const update_Suggestions = (sugg) => {
+        setSuggestions(sugg);
+    }
 
     const update_currentUsage = (usage) => {
         setCurrentUsage(usage);
@@ -60,11 +67,20 @@ export default function SinagContext({children}) {
         setToOffset(offset);
     }
 
+    const update_Message = (msg) => {
+        setMessage(msg);
+    }
+
+    const update_percentageSaved = (percentage) => {
+        setSavedPercentage(percentage);
+    }
+
 
     return(
         <sinagContext.Provider value={{address, Baseline, currentUsage, energySaved, sinagTokens, rate, history,
         update_address, update_Baseline, update_currentUsage, update_energySaved, update_sinagTokens, update_rate, 
-        update_History, add_HistoryEntry , EnvironmentalImpact, update_environmentalImpact, toOffset, update_toOffset}}>
+        update_History, add_HistoryEntry , update_Suggestions, suggestions, savedPercentage, update_percentageSaved,
+        EnvironmentalImpact, update_environmentalImpact, toOffset, update_toOffset, message , update_Message}}>
             {children}
         </sinagContext.Provider>
     )

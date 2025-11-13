@@ -33,7 +33,10 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
     update_sinagTokens,
     update_History,
     update_environmentalImpact,
-    update_toOffset
+    update_toOffset,
+    update_Message,
+    update_Suggestions,
+    update_percentageSaved
   } = React.useContext(sinagContext);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -114,6 +117,15 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
 
           update_toOffset(data.To_Offset_Emissions || 0);
           console.log('To Offset:', data.To_Offset_Emissions);
+
+          update_Message(data.message || "Please upload your bill in the Bill Tracker");
+          console.log('Message:', data.message);
+
+          update_Suggestions(data.suggestions || "Please insert your bill to get suggestions.");
+          console.log('Suggestions:', data.suggestions);
+
+          update_percentageSaved(data.saved_Percentage || 0);
+          console.log('Percentage Saved:', data.saved_Percentage);
           
           // Map history with correct field names
           const mappedHistory = (data.history || []).map((entry: any) => ({
